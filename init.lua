@@ -90,6 +90,25 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+vim.o.expandtab = true -- Tabs → Leerzeichen
+vim.o.tabstop = 2 -- 1 Tab = 2 Leerzeichen (für Anzeige)
+vim.o.shiftwidth = 2 -- Einzug = 2 Leerzeichen
+vim.o.softtabstop = 2 -- Verhalten beim Drücken von <Tab>
+
+vim.api.nvim_create_autocmd('BufReadPost', {
+  pattern = '*',
+  callback = function()
+    vim.cmd 'silent! %retab!'
+  end,
+})
+
+vim.diagnostic.config {
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+}
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
@@ -228,7 +247,6 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -392,6 +410,11 @@ require('lazy').setup({
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
+        defaults = {
+          file_ignore_patterns = {
+            'node_modules',
+          },
+        },
         --
         -- defaults = {
         --   mappings = {
@@ -682,6 +705,15 @@ require('lazy').setup({
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               -- diagnostics = { disable = { 'missing-fields' } },
+            },
+          },
+        },
+        stylelint_lsp = {
+          filetypes = { 'css', 'scss', 'less', 'svelte' },
+          settings = {
+            stylelintplus = {
+              autoFixOnSave = true, -- optional, wenn du auto-fix willst
+              filetypes = { 'css', 'scss', 'less', 'svelte' },
             },
           },
         },
@@ -985,7 +1017,7 @@ require('lazy').setup({
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
