@@ -717,6 +717,17 @@ require('lazy').setup({
             },
           },
         },
+        intelephense = {
+          {
+            filetypes = { 'php' },
+          },
+        },
+        emmet_ls = {},
+        eslint = {},
+        html = {},
+        prettier = {},
+        svelte = {},
+        ts_ls = {},
       }
 
       -- Ensure the servers and tools above are installed
